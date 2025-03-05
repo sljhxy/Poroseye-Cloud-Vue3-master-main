@@ -5,7 +5,8 @@ import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 import { isHttp, isPathMatch } from '@/utils/validate'
 import { isRelogin } from '@/utils/request'
-import useUserStore from '@/store/modules/user'
+import useUserStore from '@/store/modules/clientUser'
+import useUserStore111 from '@/store/modules/user'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
 
@@ -19,6 +20,7 @@ const isWhiteList = (path) => {
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
+  // debugger
   if (getToken()) {
     to.meta.title && useSettingsStore().setTitle(to.meta.title)
     /* has token*/
@@ -30,8 +32,9 @@ router.beforeEach((to, from, next) => {
     } else {
       if (useUserStore().roles.length === 0) {
         isRelogin.show = true
+        // debugger
         // 判断当前用户是否已拉取完user_info信息
-        useUserStore().getInfo().then(() => {
+        useUserStore().getUserInfo().then(() => {
           isRelogin.show = false
           usePermissionStore().generateRoutes().then(accessRoutes => {
             // 根据roles权限生成可访问的路由表
@@ -43,7 +46,7 @@ router.beforeEach((to, from, next) => {
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
           })
         }).catch(err => {
-          useUserStore().logOut().then(() => {
+          useUserStore().clientLogout().then(() => {
             ElMessage.error(err)
             next({ path: '/' })
           })

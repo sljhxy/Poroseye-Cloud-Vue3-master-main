@@ -185,7 +185,7 @@
           <el-form-item>
             <label class="remember-account">
               <input type="checkbox" v-model="formData.rememberAccount">
-              <span style="cursor: pointer;">我已阅读并同意<span style="color: #40a9ff;">《POROSEYE 用户协议》</span></span>
+              <span style="cursor: pointer;">我已阅读并同意<span style="color: #40a9ff;">《POROSEYE用户协议》</span>和<span style="color: #40a9ff;">《隐私政策》</span></span>
             </label>
             <el-button class="login-button" 
               :loading="loading"
@@ -234,6 +234,12 @@ const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 const loading = ref(false);
+
+
+const redirect = ref(undefined);
+watch(route, (newRoute) => {
+    redirect.value = newRoute.query && newRoute.query.redirect;
+}, { immediate: true });
 
 
 const formData = ref({

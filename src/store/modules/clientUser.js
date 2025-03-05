@@ -1,4 +1,4 @@
-import { clientLogin, clientLogout, getClientInfo } from '@/api/login'
+import { clientLogin, clientLogout, getUserInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { isEmpty } from "@/utils/validate"
 import defAva from '@/assets/images/profile.jpg'
@@ -11,7 +11,9 @@ const useClientUserStore = defineStore(
       id: '',
       userno: '',
       username:'',
-      avatar: ''
+      avatar: '',
+      roles: [],
+      permissions:[]
     }),
     actions: {
       // 登录
@@ -23,6 +25,7 @@ const useClientUserStore = defineStore(
         return new Promise((resolve, reject) => {
           clientLogin(userno, password).then(res => {
             let data = res.data
+            console.log(data)
             setToken(data.access_token)
             this.token = data.access_token
             resolve()
@@ -32,17 +35,26 @@ const useClientUserStore = defineStore(
         })
       },
       // 获取用户信息
-      getInfo() {
+      getUserInfo() {
+        // debugger
         return new Promise((resolve, reject) => {
-          getClientInfo().then(res => {
+          // debugger
+          getUserInfo().then(res => {
+            // debugger
+            console.log('获取用户信息')
+            console.log(res)
+            console.log('获取用户信息')
             const user = res.user
             const avatar = (isEmpty(user.avatar)) ? defAva : user.avatar
             this.id = user.id
             this.username = user.userName
             this.userno = user.userNo
             this.avatar = avatar
+            this.roles = ['admin']
+            this.permissions = ['*:*:*']
             resolve(res)
           }).catch(error => {
+            console.log(error)
             reject(error)
           })
         })
@@ -52,6 +64,7 @@ const useClientUserStore = defineStore(
         return new Promise((resolve, reject) => {
           clientLogout(this.token).then(() => {
             this.token = ''
+            this.roles = []
             removeToken()
             resolve()
           }).catch(error => {

@@ -9,6 +9,9 @@ export function getToken() {
 }
 
 export function setToken(token) {
+  console.log('token', token)
+  Cookies.set(TokenKey, token)
+  console.log('获取到的token 为：', Cookies.get(TokenKey))
   return Cookies.set(TokenKey, token)
 }
 

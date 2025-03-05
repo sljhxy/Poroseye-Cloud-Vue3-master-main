@@ -69,7 +69,8 @@ export function clientLogin(userno, password) {
     url: '/auth/clientLogin',
     headers: {
       isToken: false,
-      repeatSubmit: false
+      repeatSubmit: false,
+      login_type: 'client_user'
     },
     method: 'post',
     data: { userno, password}
@@ -88,9 +89,12 @@ export function clientLogout() {
 
 
 // 获取客户端用户详细信息
-export function getClientInfo() {
+export function getUserInfo() {
   return request({
-    url: '/baseUser/getInfo',
+    url: '/glxt/baseUser/getStuInfo',
+    headers: {
+      login_type: 'client_user'
+    },
     method: 'get'
   })
 }

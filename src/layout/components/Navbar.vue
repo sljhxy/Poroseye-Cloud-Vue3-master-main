@@ -15,7 +15,9 @@
       <div class="avatar-container">
         <el-dropdown @command="handleCommand" class="right-menu-item" trigger="click">
           <div class="avatar-wrapper">
-            <img :src="userStore.avatar" class="user-avatar" />
+            {{ userStore }}
+            <!-- <img :src="userStore.id" class="user-avatar" /> -->
+             <span>{{ userStore.username }}</span>
             <el-icon class="avatar-icon"><caret-bottom /></el-icon>
           </div>
           <template #dropdown>
@@ -23,9 +25,9 @@
               <router-link to="/user/profile">
                 <el-dropdown-item>个人中心</el-dropdown-item>
               </router-link>
-              <el-dropdown-item command="setLayout" v-if="settingsStore.showSettings">
+              <!-- <el-dropdown-item command="setLayout" v-if="settingsStore.showSettings">
                 <span>布局设置</span>
-              </el-dropdown-item>
+              </el-dropdown-item> -->
               <el-dropdown-item divided command="logout">
                 <span>退出登录</span>
               </el-dropdown-item>
@@ -48,11 +50,11 @@ import HeaderSearch from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
 import useAppStore from '@/store/modules/app'
-import useUserStore from '@/store/modules/user'
+import useClientUserStore from '@/store/modules/clientUser'
 import useSettingsStore from '@/store/modules/settings'
 
 const appStore = useAppStore()
-const userStore = useUserStore()
+const userStore = useClientUserStore()
 const settingsStore = useSettingsStore()
 
 function toggleSideBar() {
@@ -78,7 +80,7 @@ function logout() {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    userStore.logOut().then(() => {
+    userStore.clientLogout().then(() => {
       location.href = '/index';
     })
   }).catch(() => { });

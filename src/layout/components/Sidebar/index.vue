@@ -9,6 +9,7 @@
     <!-- 科目列表 -->
     <div class="sidebar">
     <ul>
+      <!-- v-hasPermi="['glxt:subject:list']" -->
       <li v-for="(item, index) in mt_school_subject" :key="index" @click="handleSubjectChange(item)">
         <span :style="[item.value == clickCurrentId ? dynamicStyles : 'none' ]">{{ item.label }}</span>
       </li>
@@ -38,11 +39,11 @@
         </p><br>
         <p>
           魔瞳（北京）科技有限公司是一家互联网教育科技企业，也是中关村高新技术企业，在2021年荣获中关村前沿科技企业称号。公司核心团队人员来自新东方、百度、腾讯、中信等国内头部教育、科技、金融机构，成员平均从业经验十年以上。<br><br>
-魔瞳拥有多项自主发明专利和技术专利，运用人工智能、大数据、云计算、混合现实等技术，为国内中小学、职业院校和研究院等机构的教学实验场景提供智能化解决方案，公司服务客户遍布全国多省地市。<br><br><br>
+          魔瞳拥有多项自主发明专利和技术专利，运用人工智能、大数据、云计算、混合现实等技术，为国内中小学、职业院校和研究院等机构的教学实验场景提供智能化解决方案，公司服务客户遍布全国多省地市。<br><br><br>
 
-「公司使命」：让知识触手可及！<br>
-「公司愿景」：给学校赋能，为老师减负，使学生增效，让家长放心！<br>
-「公司价值观」：诚信务实、自驱进取、开放创新、协同分享！
+          「公司使命」：让知识触手可及！<br>
+          「公司愿景」：给学校赋能，为老师减负，使学生增效，让家长放心！<br>
+          「公司价值观」：诚信务实、自驱进取、开放创新、协同分享！
         </p></div>
         
 
@@ -68,9 +69,9 @@ const showAboutDialog = ref(false)
 const route = useRoute();
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
-const permissionStore = usePermissionStore()
+// const permissionStore = usePermissionStore()
 
-const sidebarRouters = computed(() => permissionStore.sidebarRouters);
+// const sidebarRouters = computed(() => permissionStore.sidebarRouters);
 const showLogo = computed(() => settingsStore.sidebarLogo);
 const sideTheme = computed(() => settingsStore.sideTheme);
 const theme = computed(() => settingsStore.theme);
