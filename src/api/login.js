@@ -137,25 +137,27 @@ export function getSmsCode(data) {
 
 
 //短信注册
-export function registerAppUser(phoneNumber, smsCode, uuid, password) {
+export function registerAppUser(data) {
   return request({
     url: '/auth/registerAppUser',
     headers: {
-      isToken: false
+      isToken: false,
+      login_type: 'app_user'
     },
-    data: { phoneNumber, smsCode, uuid, password},
+    data: data,
     method: 'post'
   })
 }
 
 //短信登录
-export function smsLogin(phoneNumber, smsCode, uuid) {
+export function smsLogin(phonenumber, smsCode, uuid) {
   return request({
     url: '/auth/smsLogin',
     headers: {
-      isToken: false
+      isToken: false,
+      login_type: 'app_user'
     },
-    data: { phoneNumber, smsCode, uuid},
+    data: { phonenumber, smsCode, uuid},
     method: 'post'
   })
 }
@@ -164,7 +166,10 @@ export function smsLogin(phoneNumber, smsCode, uuid) {
 // 获取短信用户详细信息
 export function getSmsInfo() {
   return request({
-    url: '/appUser/getInfo',
+    url: '/glxt/appUser/getInfo',
+    headers: {
+      login_type: 'app_user'
+    },
     method: 'get'
   })
 }
@@ -174,6 +179,9 @@ export function getSmsInfo() {
 export function smsLogout() {
   return request({
     url: '/auth/smsLogout',
+    headers: {
+      login_type: 'app_user'
+    },
     method: 'delete'
   })
 }

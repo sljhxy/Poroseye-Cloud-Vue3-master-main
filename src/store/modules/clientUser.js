@@ -1,5 +1,5 @@
 import { clientLogin, clientLogout, getUserInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setLoginType, getLoginType, removeLoginType } from '@/utils/auth'
 import { isEmpty } from "@/utils/validate"
 import defAva from '@/assets/images/profile.jpg'
 
@@ -12,6 +12,7 @@ const useClientUserStore = defineStore(
       userno: '',
       username:'',
       avatar: '',
+      loginType: getLoginType(),
       roles: [],
       permissions:[]
     }),
@@ -27,7 +28,9 @@ const useClientUserStore = defineStore(
             let data = res.data
             console.log(data)
             setToken(data.access_token)
+            setLoginType(data.login_type)
             this.token = data.access_token
+            this.loginType = data.login_type
             resolve()
           }).catch(error => {
             reject(error)
@@ -41,9 +44,6 @@ const useClientUserStore = defineStore(
           // debugger
           getUserInfo().then(res => {
             // debugger
-            console.log('获取用户信息')
-            console.log(res)
-            console.log('获取用户信息')
             const user = res.user
             const avatar = (isEmpty(user.avatar)) ? defAva : user.avatar
             this.id = user.id
@@ -66,6 +66,7 @@ const useClientUserStore = defineStore(
             this.token = ''
             this.roles = []
             removeToken()
+            removeLoginType()
             resolve()
           }).catch(error => {
             reject(error)

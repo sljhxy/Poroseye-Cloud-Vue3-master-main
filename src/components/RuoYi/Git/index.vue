@@ -1,6 +1,8 @@
 <template>
   <div>
-    <svg-icon icon-class="github" @click="goto" />
+    <!-- <svg-icon icon-class="github"  /> -->
+    <h4 style="color: #40a9ff;font-weight: bold;cursor: pointer;" @click="goto" >《POROSEYE用户协议》</h4>
+    
   </div>
 </template>
 

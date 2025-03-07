@@ -307,6 +307,20 @@
     </div>
   </template>
     </el-dialog>
+
+    <!-- 弹学段框 -->
+    <el-dialog    
+        v-model="showAcademicStageDialogTmp"
+        width="500px"
+        title="选择学段"
+        style="border-radius: 15px;position: relative;top: 50px;text-align: center;"
+        :close-on-click-modal="false"
+        class="textbook-dialog"
+        destroy-on-close>
+        <div class="dialog-content">
+
+        </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -319,6 +333,9 @@ import { ref, computed, onMounted, watch  } from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 // 添加关于弹框控制变量
 const showAboutDialog = ref(false)
+//学段弹框控制变量
+const showAcademicStageDialog = ref(false)
+
 const searchText = ref('')
 const loading = ref(true);
 
@@ -341,6 +358,17 @@ import { listSubject, getSubject, delSubject, addSubject, updateSubject, addOrUp
 
 //导入实验API
 import { listExperimentInfoMountsystem } from '@/api/poroseye/experimentInfo'
+
+
+//获取学段store
+import academicStageStore from '@/store/modules/academicStage'
+const useAcademicStageStore = academicStageStore()
+
+
+
+const showAcademicStageDialogTmp = computed(() => {
+  return useAcademicStageStore.academicStageList.length > 0 ? showAcademicStageDialog.value = true : showAcademicStageDialog.value = false
+})
 
 //存用户选中了教材版本-分册后获取章节的数据
 const chapterResult = ref([])
@@ -387,7 +415,7 @@ function getVolumeListByLiabraryId(id) {
         subjectList.value[i].mtVolumeList = mtVolumeList.value
       }
     }
-    console.log(libraryList.value)
+    // console.log(libraryList.value)
   });
 }
 
@@ -743,6 +771,9 @@ function getExperimentList() {
     // loading.value = false;
   });
 }
+
+
+
 
 getExperimentList()
 

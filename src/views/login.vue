@@ -25,11 +25,11 @@
                 <el-form ref="loginRef" :model="formData" :rules="rules" label-width="auto" style="max-width: 600px">
                   <el-form-item prop="userno">
                     <el-input v-model="formData.userno" style="width: 100%;height: 50px;
-                        margin: 20px 0 0 0" size="large" type="text" placeholder="请输入学号" :prefix-icon="User" clearable/>
+                        margin-top: 20px;--el-border-radius-base: 30px;" size="large" type="text" placeholder="请输入学号" :prefix-icon="User" clearable/>
                   </el-form-item>
 
                   <el-form-item prop="password">
-                    <el-input v-model="formData.password" style="width: 100%;margin: 0 0 0 0;height: 50px;" size="large"
+                    <el-input v-model="formData.password" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large"
                       type="password" placeholder="请输入密码" :prefix-icon="Lock" show-password clearable />
                   </el-form-item>
 
@@ -75,9 +75,9 @@
             </template>
 
             <el-form ref="loginPhoneRef" :model="formData" :rules="rules" label-width="auto" style="max-width: 600px">
-              <el-form-item prop="phoneNumber">
-                <el-input v-model="formData.phoneNumber" style="width: 100%;
-                        margin: 20px 0 0 0;height: 50px;" size="large" type="text" placeholder="请输入手机号码"
+              <el-form-item prop="phonenumber">
+                <el-input v-model="formData.phonenumber" style="width: 100%;
+                        margin-top: 20px;height: 50px;--el-border-radius-base: 30px;" size="large" type="text" placeholder="请输入手机号码"
                   :prefix-icon="Iphone" :clearable="!isPhoneValid" >
                   <template #suffix>
                     <el-icon class="valid-icon" v-if="isPhoneValid"><CircleCheck /></el-icon>
@@ -85,7 +85,7 @@
                 </el-input>
               </el-form-item>
               <el-form-item>
-                <el-input v-model="formData.smsCode" style="width: 100%;margin: 0 0 0 0;height: 50px;" size="large"
+                <el-input v-model="formData.smsCode" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large"
                   type="text" placeholder="请输入短信验证码" :prefix-icon="ChatDotSquare" clearable>
                   <template #append>
                     <el-button  :disabled="!isPhoneValid" :class="{ activeYzm: isPhoneValid }" @click="handleSendCode">{{ countdown >
@@ -96,14 +96,14 @@
               </el-form-item>
               <el-form-item>
                 <label class="remember-account">
-                  <input type="checkbox" v-model="formData.rememberAccount">
+                  <input type="checkbox" v-model="formData.rememberPhoneNumber">
                   <span>记住当前账号</span>
                 </label>
                 <!-- <button class="login-button" @click="handleSubjectChange">登录</button> -->
                 <el-button class="login-button" 
                   :loading="loading"
-                  :disabled="!formData.phoneNumber && !formData.smsCode"
-                  :class="{ loginBtn: formData.phoneNumber && formData.smsCode }" 
+                  :disabled="!formData.phonenumber && !formData.smsCode"
+                  :class="{ loginBtn: formData.phonenumber && formData.smsCode }" 
                   @click.prevent="handleSmsLogin">
                 <span v-if="!loading">登 录</span>
                 <span v-else>登 录 中...</span>
@@ -156,10 +156,10 @@
       <div class="login-form"
         style="margin: 0 auto;width: 400px;--el-color-primary:#ff6634;--el-text-color-primary:#999;--el-font-size-base: 17px;">
 
-        <el-form ref="registerUserRef" :model="formData" :rules="rules" label-width="auto" style="max-width: 600px">
-          <el-form-item prop="phoneNumber">
-            <el-input v-model="formData.phoneNumber" style="width: 100%;
-                        margin: 20px 0 0 0;height: 50px;" size="large" type="text" placeholder="请输入手机号"
+        <el-form ref="registerUserRef" :model="formData" :rules="registerRules" label-width="auto" style="max-width: 600px">
+          <el-form-item prop="phonenumber">
+            <el-input v-model="formData.phonenumber" style="width: 100%;
+                        margin-top: 20px;height: 50px;--el-border-radius-base: 30px;" size="large" type="text" placeholder="请输入手机号"
               :prefix-icon="Iphone" :clearable="!isPhoneValid">
               <template #suffix>
                     <el-icon class="valid-icon" v-if="isPhoneValid"><CircleCheck /></el-icon>
@@ -168,31 +168,35 @@
           </el-form-item>
           <el-form-item>
 
-            <el-input v-model="formData.smsCode" style="width: 100%;margin: 0 0 0 0;height: 50px;" size="large" type="text"
+            <el-input v-model="formData.smsCode" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large" type="text"
               placeholder="请输入短信验证码" :prefix-icon="ChatDotSquare" clearable>
               <template #append>
                 <el-button :disabled="!isPhoneValid" :class="{ activeYzm: isPhoneValid }" @click="handleSendCode">{{ countdown > 0 ?
-                        `${countdown}s` : '获取验证码' }}</el-button>
+                        `获取验证码${countdown}s` : '获取验证码' }}</el-button>
               </template>
 
             </el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input v-model="formData.password" style="width: 100%;margin: 0 0 0 0;height: 50px;" size="large"
+            <el-input v-model="formData.password" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large"
               type="password" placeholder="请输入密码" :prefix-icon="Lock" show-password clearable />
 
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="isagree">
             <label class="remember-account">
-              <input type="checkbox" v-model="formData.rememberAccount">
-              <span style="cursor: pointer;">我已阅读并同意<span style="color: #40a9ff;">《POROSEYE用户协议》</span>和<span style="color: #40a9ff;">《隐私政策》</span></span>
+              <input type="checkbox" v-model="formData.isagree">
+              <span style="cursor: pointer;">我已阅读并同意<span style="color: #40a9ff;" @click="goToUserAgreement">《POROSEYE用户协议》</span>和
+              <span style="color: #40a9ff;" @click="goToPrivacyPolicy">《隐私政策》</span></span>
+              
             </label>
+            <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
+            <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
             <el-button class="login-button" 
               :loading="loading"
-              :disabled="!formData.phoneNumber && !formData.smsCode && !formData.password"
-              :class="{ loginBtn: formData.phoneNumber && formData.smsCode && formData.password }" @click="handleRegisterUser">
-              <span v-if="!loading">注 册</span>
-              <span v-else>注 册 中...</span>
+              :disabled="!formData.phonenumber && !formData.smsCode && !formData.password"
+              :class="{ loginBtn: formData.phonenumber && formData.smsCode && formData.password }" @click="handleRegisterUser">
+                <span v-if="!loading">注 册</span>
+                <span v-else>注 册 中...</span>
             </el-button>
           </el-form-item>
         </el-form>
@@ -214,6 +218,11 @@ import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import { User, Lock, Iphone, Message, ChatDotSquare,CircleCheck } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+
+import { getToken, setToken, removeToken , setLoginType, getLoginType, removeLoginType} from '@/utils/auth'
+import RuoYiGit from '@/components/RuoYi/Git'
+import RuoYiDoc from '@/components/RuoYi/Doc'
+
 const activeTab = ref('account');
 const countdown = ref(0);
 const isWechatLogin = ref(false);
@@ -243,19 +252,21 @@ watch(route, (newRoute) => {
 
 
 const formData = ref({
-  phoneNumber:'',
+  phonenumber:'',
   userno: '',
   password: '',
   smsCode: '',
   uuid: '',
-  rememberAccount: false
+  rememberAccount: false,
+  rememberPhoneNumber: false,
+  isagree: ''
 });
 
 
 //清空表单数据
 const resetFormData = () => {
   formData.value = {
-    phoneNumber: null,
+    phonenumber: null,
     userno: null,
     password: null,
     smsCode: null,
@@ -268,9 +279,24 @@ const rules = {
     { required: true, message: '请输入学号', trigger: 'blur' },
     { min: 5, max: 16, message: '学号长度为6-16位', trigger: 'blur' }
   ],
-  phoneNumber: [
-    { required: true, message: '请输入手机号', trigger: 'blur' },
+  phonenumber: [
+    { required: true, message: '请输入正确的手机号', trigger: 'blur' },
     { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 16, message: '密码长度为6-16位', trigger: 'blur' }
+  ],
+}
+
+
+const registerRules = {
+  phonenumber: [
+    { required: true, message: '请输入正确的手机号', trigger: 'blur' },
+    { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }
+  ],
+  isagree: [
+    { required: true, message: '请勾选相关协议', trigger: 'blur' },
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
@@ -282,7 +308,7 @@ const rules = {
 // 添加手机号验证计算属性
 const isPhoneValid = computed(() => {
   const phoneRegex = /^1[3-9]\d{9}$/
-  return phoneRegex.test(formData.value.phoneNumber)
+  return phoneRegex.test(formData.value.phonenumber)
 })
 
 
@@ -292,8 +318,10 @@ const handleTabChange = (tab) => {
   if (activeTab.value == 'account') {
     // 重新加载教材版本数据
     // getLibraryList()
+    getCookie()
   } else if (activeTab.value == 'phone') {
 
+    getCookie()
     resetFormData()//先重置表单
     // 重新加载知识点数据
   }
@@ -338,7 +366,7 @@ function handleLogin(){
           }
           return acc;
         }, {});
-        console.log('客户端登录成功。。。1111111。。')
+        console.log('客户端登录成功。。。。。')
         router.push({ path: redirect.value || "/", query: otherQueryParams });
         console.log('客户端登录成功。。。。。')
       }).catch(() => {
@@ -359,11 +387,13 @@ function handleSmsLogin() {
       loading.value = true;
 
        // 勾选了需要记住密码设置在 cookie 中设置记住用户名和密码
-      if (formData.value.rememberAccount) {
-          Cookies.set("phoneNumber", formData.value.phoneNumber, { expires: 30 });
+      if (formData.value.rememberPhoneNumber) {
+          Cookies.set("phonenumber", formData.value.phonenumber, { expires: 30 });
+          Cookies.set("rememberPhoneNumber", formData.value.rememberPhoneNumber, { expires: 30 });
       } else {
           // 否则移除
-          Cookies.remove("phoneNumber");
+          Cookies.remove("phonenumber");
+          Cookies.remove("rememberPhoneNumber");
       }
 
 
@@ -381,25 +411,6 @@ function handleSmsLogin() {
       }).catch(() => {
         loading.value = false;
       });
-
-      // smsLogin(formData.value).then(res => {
-      //   if(res.code === 200) {
-      //     ElMessage.success('登录成功')
-      //     const otherQueryParams = Object.keys(query).reduce((acc, cur) => {
-      //     if (cur !== "redirect") {
-      //       acc[cur] = query[cur];
-      //       }
-      //       return acc;
-      //     }, {});
-      //     console.log('客户端登录成功。。。1111111。。')
-      //     router.push({ path: redirect.value || "/", query: otherQueryParams });
-      //       console.log('登录成功')
-      //       console.log(formData.value.uuid)
-      //     } else {
-      //       loading.value = false;
-      //       ElMessage.error(res.msg)
-      //     }
-      // });
     }
   });
 
@@ -408,20 +419,48 @@ function handleSmsLogin() {
 
 //短信注册
 function handleRegisterUser() {
-
   proxy.$refs.registerUserRef.validate(valid => {
+  
     if(valid) {
-      login.value = true;
-      console.log('注册')
-      smsStore.registerSmsUser(formData.value).then(() => {
-        console.log('注册用户成功。。。')
-      }).catch(() => {
-        loading.value = false;
-      });
+      loading.value = true;
+
+      formData.value.isagree = formData.value.isagree ? '1' : '0'
+        registerAppUser(formData.value).then((res) => {
+          console.log('注册用户成功。。。')
+          // registeFlag
+          if(res.code === 200) {
+            ElMessageBox.alert("<font color='#ff6634'>恭喜你，您的账号 " + formData.value.phonenumber + " 注册成功！</font>", "系统提示", {
+              dangerouslyUseHTMLString: true,
+              type: "success",
+            }).then(() => {
+              loading.value = false;
+              registeFlag.value = !registeFlag.value//切换到手机登录页面
+              activeTab.value = 'phone'//切换到手机登录页面
+              router.push("/login");
+            }).catch(() => {});
+          }
+
+          //错误提示
+          if(res.code == 500) {
+            ElMessage.error(res.msg)
+          }
+        }).catch(() => {
+          loading.value = false;
+        });
     }
+    
   })
 }
 
+  
+
+const goToUserAgreement = () => {
+  router.push('/user-agreement');
+};
+
+const goToPrivacyPolicy = () => {
+  router.push('/privacy-policy');
+};
 
 const toggleLoginMode = () => {
   isWechatLogin.value = !isWechatLogin.value;
@@ -431,9 +470,12 @@ const toggleLoginMode = () => {
 const handleSendCode = () => {
   if (countdown.value > 0) return;
   //获取短信验证码
-  getSmsCode(formData.value.phoneNumber).then(res => {
+  getSmsCode(formData.value.phonenumber).then(res => {
     if(res.code === 200) {
       formData.value.uuid = res.data.uuid
+    }
+    if(res.code === 500) {
+      ElMessage.error(res.data.msg)
     }
   });
   //一分钟有效时间
@@ -441,6 +483,8 @@ const handleSendCode = () => {
   const timer = setInterval(() => {
     countdown.value--;
     if (countdown.value <= 0) {
+      loading.value = false;
+      ElMessage.error('登录超时，验证码已失效,请重新发送进行登录')
       clearInterval(timer);
     }
   }, 1000);
@@ -469,18 +513,47 @@ const register = () => {
 //微信扫码登录
 const isWechatLoginFlag = ref(false)
 const weixinLogin = (value) => {
+  loading.value = false //取消登录加载过程
   isWechatLoginFlag.value = !isWechatLoginFlag.value;
   activeTab.value = 'account'
 
   console.log(value)
   if(value == false) {//切换微信扫码
     scan()
+    // wcLogin()
   } else{
     //停止轮询
     clearInterval(loginTimer.value);
     console.log('停止了')
   }
 }
+
+
+function wcLogin() {
+  console.log(smsStore.codeImage)
+  console.log(smsStore.loginTimer)
+  codeImage.value = smsStore.codeImage;
+  smsStore.wxlogin().then(() => {
+    
+    console.log('codeImage.value')
+    console.log(codeImage.value)
+    console.log('codeImage.value')
+    clearInterval(smsStore.loginTimer)
+        const query = route.query;
+        const otherQueryParams = Object.keys(query).reduce((acc, cur) => {
+          if (cur !== "redirect") {
+            acc[cur] = query[cur];
+          }
+          return acc;
+        }, {});
+        console.log('微信扫码登录成功。。。1111111。。')
+        router.push({ path: redirect.value || "/", query: otherQueryParams });
+        console.log('微信扫码登录成功。。。。。')
+      }).catch(() => {
+        loading.value = false;
+      });
+}
+
 
 //获取二维码
 const codeImage = ref('')//二维码图片
@@ -508,16 +581,33 @@ const scan = async () => {
         userInfo.value.avator = res.data.user.avatar;
         userInfo.value.nickname = res.data.user.wxNickName;
         userInfo.value.userId = res.data.user.id;
-
-        if(userInfo.value.access_token) {
-          console.log('登录成功')
+        userInfo.value.loginType = res.data.login_type;
+        console.log('微信扫码登录成功。。。2222222。。')
+        console.log(smsStore.$id)
+        console.log('微信扫码登录成功。。。2222222。。')
+        setToken(userInfo.value.access_token)
+        setLoginType(userInfo.value.loginType)
+        if(getToken()) {
+          console.log('微信扫码登录成功')
+          const query = route.query;
+          const otherQueryParams = Object.keys(query).reduce((acc, cur) => {
+            if (cur !== "redirect") {
+              acc[cur] = query[cur];
+            }
+            return acc;
+          }, {});
+          console.log('微信扫码登录成功。。。1111111。。')
+          router.push({ path: redirect.value || "/", query: otherQueryParams });
+          console.log('微信扫码登录成功。。。。。')
           clearInterval(loginTimer.value);
         }
       } else if(scanResData == -2) {
         //== -2 表示二维码过期
         clearInterval(loginTimer.value);
       } 
-
+      // else if(scanResData == -1) {
+      //   ElMessage.error('您没有关注公众号，需要关注公众号才能登录')
+      // }
       
     }, 3000);
   }
@@ -529,11 +619,17 @@ function getCookie() {
   const userno = Cookies.get("userno");
   const password = Cookies.get("password");
   const rememberAccount = Cookies.get("rememberAccount");
+  const rememberPhoneNumber = Cookies.get("rememberPhoneNumber");
+  const phonenumber = Cookies.get("phonenumber");
   formData.value = {
     userno: userno === undefined ? formData.value.userno : userno,
     password: password === undefined ? formData.value.password : decrypt(password),
-    rememberAccount: rememberAccount === undefined ? false : Boolean(rememberAccount)
+    phonenumber: phonenumber === undefined ? formData.value.phonenumber : phonenumber,
+    rememberAccount: rememberAccount === undefined ? false : Boolean(rememberAccount),
+    rememberPhoneNumber: rememberPhoneNumber === undefined ? false : Boolean(rememberPhoneNumber)
   };
+  console.log(phonenumber)
+  console.log(rememberPhoneNumber)
 }
 
 
@@ -561,9 +657,9 @@ getCookie()
     width: 480px;
     height: 600px;
     background: #fff;
-    border-radius: 8px;
+    border-radius: 20px;
     padding: 20px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 11px 15px 12px rgba(0, 0, 0, 0.1);
   }
 
   .login-header {
@@ -641,7 +737,7 @@ getCookie()
         width: 16px;
         height: 16px;
         border: 1px solid #dcdfe6;
-        border-radius: 2px;
+        border-radius: 30px;
         background-color: #fff;
         transition: all 0.3s;
         position: relative;
@@ -677,7 +773,7 @@ getCookie()
     height: 50px;
     background: #ffdfd3;
     border: none;
-    border-radius: 10px;
+    border-radius: 30px;
     color: #fff;
     font-size: 16px;
     // cursor: pointer;
@@ -687,7 +783,7 @@ getCookie()
     //   background: #ff6634;
     // }
 
-   
+  
   }
 
   .loginBtn {
@@ -781,6 +877,7 @@ getCookie()
           --el-color-primary-light-7: #ff6634; //获取光标边框颜色
           --el-color-primary-light-9: white; //获取光标的背景颜色
         }
+
 
         .wechat-icon {
           font-size: 15px;

@@ -1,34 +1,15 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'Admin-Token'
+const TokenKey = 'Client-Token'
 
-const loginKey = 'login_type'
-
-const ExpiresInKey = 'Admin-Expires-In'
-
-
-
-export function setLoginType(value) {
-  return Cookies.set(loginKey, value)
-}
-
-export function getLoginType() {
-  return Cookies.get(loginKey)
-}
-
-export function removeLoginType() {
-  return Cookies.remove(loginKey)
-}
-
+const ExpiresInKey = 'Client-Expires-In'
 
 export function getToken() {
   return Cookies.get(TokenKey)
 }
 
 export function setToken(token) {
-  console.log('token', token)
-  Cookies.set(TokenKey, token)
-  console.log('获取到的token 为：', Cookies.get(TokenKey))
+
   return Cookies.set(TokenKey, token)
 }
 

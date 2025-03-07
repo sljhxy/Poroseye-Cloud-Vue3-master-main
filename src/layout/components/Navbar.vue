@@ -15,9 +15,9 @@
       <div class="avatar-container">
         <el-dropdown @command="handleCommand" class="right-menu-item" trigger="click">
           <div class="avatar-wrapper">
-            {{ userStore }}
+            {{ userStore.loginType }}-{{userSmsStore.loginType  }} {{ userStore.id }}-{{ userSmsStore.id }}
             <!-- <img :src="userStore.id" class="user-avatar" /> -->
-             <span>{{ userStore.username }}</span>
+            <span>{{userStore.id ? userStore.username : userSmsStore.phoneNumber }}</span>
             <el-icon class="avatar-icon"><caret-bottom /></el-icon>
           </div>
           <template #dropdown>
@@ -51,10 +51,12 @@ import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
 import useAppStore from '@/store/modules/app'
 import useClientUserStore from '@/store/modules/clientUser'
+import useSmsUserStore from '@/store/modules/smsUser'
 import useSettingsStore from '@/store/modules/settings'
 
 const appStore = useAppStore()
 const userStore = useClientUserStore()
+const userSmsStore = useSmsUserStore()
 const settingsStore = useSettingsStore()
 
 function toggleSideBar() {
@@ -80,9 +82,18 @@ function logout() {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    userStore.clientLogout().then(() => {
-      location.href = '/index';
-    })
+    if(userStore.id) {
+      userStore.clientLogout().then(() => {
+        location.href = '/index';
+      })
+    }
+
+    if(userSmsStore.id) {
+      userSmsStore.smsLogout().then(() => {
+        location.href = '/index';
+      })
+    }
+  
   }).catch(() => { });
 }
 

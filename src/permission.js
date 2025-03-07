@@ -2,10 +2,11 @@ import router from './router'
 import { ElMessage } from 'element-plus'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { getToken } from '@/utils/auth'
+import { getToken, getLoginType } from '@/utils/auth'
 import { isHttp, isPathMatch } from '@/utils/validate'
 import { isRelogin } from '@/utils/request'
 import useUserStore from '@/store/modules/clientUser'
+import useSmsUserStore from '@/store/modules/smsUser'
 import useUserStore111 from '@/store/modules/user'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
@@ -13,7 +14,8 @@ import usePermissionStore from '@/store/modules/permission'
 NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login', '/register']
-
+// const userClientStore = useUserStore()
+// const userSmsStore = useSmsUserStore()
 const isWhiteList = (path) => {
   return whiteList.some(pattern => isPathMatch(pattern, path))
 }
@@ -30,7 +32,10 @@ router.beforeEach((to, from, next) => {
     } else if (isWhiteList(to.path)) {
       next()
     } else {
-      if (useUserStore().roles.length === 0) {
+
+      console.log(useUserStore().roles.length)
+      console.log(useSmsUserStore().roles.length)
+      if (useUserStore().loginType == 'client_user' && useUserStore().roles.length === 0) {
         isRelogin.show = true
         // debugger
         // 判断当前用户是否已拉取完user_info信息
@@ -51,7 +56,33 @@ router.beforeEach((to, from, next) => {
             next({ path: '/' })
           })
         })
-      } else {
+      } 
+      
+      if (useSmsUserStore().loginType == 'app_user' && useSmsUserStore().roles.length === 0) {
+        isRelogin.show = true
+        useSmsUserStore().getInfo().then((res) => {
+          // debugger
+
+          isRelogin.show = false
+          // 判断当前用户是否已拉取完user_info信息
+          usePermissionStore().generateRoutes().then(accessRoutes => {
+            // 根据roles权限生成可访问的路由表
+            accessRoutes.forEach(route => {
+              if (!isHttp(route.path)) {
+                router.addRoute(route) // 动态添加可访问路由表
+              }
+            })
+            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+          })
+        }).catch(err => {
+          useSmsUserStore().smsLogout().then(() => {
+            ElMessage.error(err)
+            next({ path: '/' })
+          })
+        })
+
+        
+      }  else {
         next()
       }
     }
