@@ -1,33 +1,37 @@
 <template>
 
-<div class="app-container experiment">
-    <div class="experiment-header">
+  <div class="app-container experiment">
+    <!-- 头部 -->
+  <poroseye-header :qhExperimentFlag="false" />
+  <div class="experiment-header">
       <h1 class="title">{{experimentNameRes}} - {{ experimentIdRes }}</h1>
       <div class="stats">
-        <!-- <span class="views">
-          <el-icon><View /></el-icon>
-          924.4k 人观看
-        </span> -->
         <span class="likes">
           <el-icon><Star /></el-icon>
           999 收藏
         </span>
         <span class="hot-tag">HOT</span>
         <div class="info-header">
-          <el-button type="primary" >去做实验</el-button>
-          <el-button>
-            <el-icon><Share /></el-icon>
-            分享
+          <el-button color="#ff9900" style="--el-color-black:#fff;" type="warning" >去做实验</el-button>
+          <el-button
+            type="info"
+            style="--el-color-primary:#606266;--el-color-primary-light-7:#dcdfe6;--el-color-primary-light-9:#fff；border-style: none;"
+            @click="back"
+          >
+            返回
           </el-button>
         </div>
       </div>
-      
     </div>
     
     <div class="experiment-content">
       
       <div class="video-section">
         <vue3videoPlay v-bind="options" />
+        <!-- <vue3videoPlay v-bind="options" />
+        <vue3videoPlay v-bind="options" />
+        <vue3videoPlay v-bind="options" />
+        <vue3videoPlay v-bind="options" /> -->
       </div>
 
       <div class="experiment-info">
@@ -127,12 +131,9 @@
           </el-collapse-item>
       </el-collapse>
     </div>
-  
-    
-
 
   </div>
-</el-scrollbar>
+        </el-scrollbar>
       </div>
     </div>
   </div>
@@ -153,8 +154,25 @@ import { getExperimentDataRes } from '@/api/poroseye/experimentInfo'
 //导入实验步骤API
 import { listExperimentInfoStep } from '@/api/poroseye/experimentInfoStep'
 
+//头部组件
+import PoroseyeHeader from '@/views/poroseye/components/poroseyeHeader.vue'
+
 //默认展开的数据---实验原理
 const activeNames = ref(['1'])
+
+
+const props = defineProps({
+  experimentId:{
+    type: Number,
+    default: 0
+  },
+
+  experimentName:{
+    type: String,
+    default: 'default'
+  }
+})
+
 
 const defaultProps = {
   children: 'children',
@@ -250,10 +268,10 @@ const experimentIdRes = ref()
 const experimentNameRes = ref()
 
 //监听科目动态
-watch(() => route.query, (newQuery) => {
+watch(() => [props.experimentId, props.experimentName], ([newExperimentId, newExperimentName]) => {
   
-  experimentIdRes.value = newQuery.experimentId
-  experimentNameRes.value = newQuery.experimentName
+  experimentIdRes.value = newExperimentId
+  experimentNameRes.value = newExperimentName
   getExperimentList(experimentIdRes.value)
 
 },{ immediate: true })
@@ -313,27 +331,45 @@ function handleChange(val) {
   console.log(val)
   console.log('stepChange')
 }
+
+const emit = defineEmits(['onNum'])
+
+//返回主页
+function back() {
+  emit('onNum', 1)
+}
+
 </script>
   
 <style lang='scss' scoped>
-
 .experiment {
-  padding: 24px;
-  margin-top: 100px;
-  margin-left:70px;
+  // padding: 16px;
+  max-width: 100%;
+  overflow-x: hidden;
+  padding-top: 10px; /* 添加顶部内边距，为固定头部留出空间 */
   .experiment-header {
-    margin-bottom: 24px;
-
+    margin-bottom: 16px;
+    position: fixed; /* 固定定位 */
+    top: 100px;
+    left: 30px;
+    right: 0;
+    z-index: 1000; /* 确保在其他元素上方 */
+    background-color: #fff; /* 添加背景色 */
+    padding: 16px 24px; /* 添加内边距 */
+    // box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+    transition: all 0.3s ease; /* 平滑过渡效果 */
     .title {
-      font-size: 24px;
+      // font-size: 20px;
+      margin-top: 0px;
       color: #303133;
-      margin-bottom: 16px;
+      font-weight: bold;
+      margin-bottom: 20px;
     }
 
     .stats {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 16px;
       color: #909399;
       font-size: 14px;
 
@@ -353,186 +389,138 @@ function handleChange(val) {
 
       .info-header {
         position: absolute;
-        right: 0;
-        padding: 24px;
+        right: 24px;
+        padding: 16px;
       }
     }
   }
 
   .experiment-content {
     display: flex;
-    gap: 24px;
-
+    gap: 16px;
+    max-height: calc(100vh - 30vh);
+    // position: relative; /* 添加相对定位 */
+    // z-index: 1000; /* 确保内容区域在适当的层级 */
     .video-section {
-      flex: 1;
+      flex: 3; /* 调整比例，原来是1 */
+      max-height: 100%;
       
-      .video-player {
+      :deep(.video-player) {
         aspect-ratio: 16/9;
-        background: #000;
+        max-height: 100%;
         border-radius: 8px;
         overflow: hidden;
+      }
+    }
 
-        .video-placeholder {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #fff;
-          font-size: 18px;
-          position: relative;
+    .experiment-info {
+      flex: 2; /* 调整比例，原来是固定宽度40% */
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      max-height: 100%;
+      overflow: hidden;
 
-          .play-icon {
-            font-size: 48px;
+      .info-content {
+        .info-item {
+          .el-collapse {
+            --el-collapse-header-height: 100px; /* 减小行高 */
+            --el-collapse-header-font-size: 20px; /* 减小标题字体 */
+            --el-collapse-content-font-size: 18px; /* 减小内容字体 */
+          }
+          
+          /* 其他样式保持不变 */
+          .steps-content {
+            padding: 5px;
+          }
+
+          /* 树节点样式调整 */
+          .custom-tree-node {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+          }
+
+          .node-content {
+            display: flex;
+            align-items: center;
+            gap: 12px; /* 减小间距 */
+          }
+
+          .step-index {
+            color: black;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 14px; /* 减小字体 */
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+          }
+
+          .step-line {
+            position: relative;
+            width: 120px; /* 减小宽度 */
+            height: 2px;
+            background: repeating-linear-gradient(
+              90deg,
+              #000,
+              #000 2px,
+              transparent 2px,
+              transparent 4px
+            );
+          }
+
+          .step-line:after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            width: 10px;
+            height: 10px;
+            background-color: #000;
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+          }
+
+          .step-label {
+            font-size: 13px; /* 减小字体 */
+          }
+
+          .first-level {
+            font-weight: bold;
+            font-size: 14px; /* 减小字体 */
+          }
+
+          .el-tag--small {
             margin-left: 12px;
           }
         }
       }
     }
-
-    .experiment-info {
-      width: 40%;
-      background: #fff;
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-
-    
-
-      .info-content {
-        
-      .info-item{
-        
-        .el-collapse {
-          --el-collapse-header-height: 100px;//行高
-          --el-collapse-header-font-size:16px;//标题字体大小
-          --el-collapse-content-font-size:15px; //内容字体大小
-        
-        }
-        
-.steps-content {
-  padding: 5px;
+  }
 }
 
-/* 其他现有样式（树节点、对话框等）保持不变... */
-
-/* 移除tabs-wrapper的重复边框 */
-:deep(.el-tabs__header) {
-  border-radius: 0;
-}
-
-/* 确保内容区域没有重复的边框和圆角 */
-:deep(.el-tab-pane) {
-  border-radius: 0;
-}
-
-/* 确保内容区域样式正确 */
-.compact-form {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Tab内容区域样式 */
-:deep(.el-tab-pane) {
-  padding: 24px;
-}
-
-.custom-tree-node {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.node-content {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.step-index {
-  // background: #b0b4b8;
-  color: black;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  min-width: 40px;
-  text-align: center;
-}
-
-/* 步骤线 */
-// .step-line {
-//   border-top: 1px dashed #909399;
-//   width: 200px;
-//   margin: 0 8px;
-// }
-.step-line {
-  position: relative;
-  width: 200px; /* 根据需要调整宽度 */
-  height: 2px; /* 虚线的高度 */
-  background: repeating-linear-gradient(
-    90deg,
-    #000,
-    #000 2px,
-    transparent 2px,
-    transparent 4px
-  ); /* 创建虚线效果 */
-}
-
-.step-line:after {
-  content: '';
-  position: absolute;
-  top: -5px; /* 根据需要调整位置 */
-  right: -10px; /* 根据需要调整位置 */
-  width: 10px; /* 箭头的大小 */
-  height: 10px; /* 箭头的大小 */
-  background-color: #000; /* 箭头的颜色 */
-  clip-path: polygon(0 0, 100% 50%, 0 100%); /* 创建三角形箭头 */
-}
-
-.step-label {
-  font-size: 14px;
-}
-
-.first-level {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.el-tag--small {
-    margin-left: 20px;
-}
-
-
-
-/* 按钮悬停效果 */
-.el-button {
-  transition: all 0.3s;
-}
-
-.el-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-:deep(.el-cascader) {
-  width: 100%;
-}
-
-:deep(.el-textarea__inner) {
-  font-family: inherit;
-}
-
-/* 设置步骤间距 */
-.el-tree {
-  --el-tree-node-content-height: 50px;
-}
-
-
+/* 响应式调整 */
+@media (max-width: 1200px) {
+  .experiment {
+    .experiment-content {
+      flex-direction: column;
+      
+      .video-section, .experiment-info {
+        width: 100%;
+        max-width: 100%;
+        flex: none;
       }
-    }
+      
+      .video-section {
+        max-height: 50vh;
+      }
+      
+      .experiment-info {
+        max-height: 50vh;
+      }
     }
   }
 }

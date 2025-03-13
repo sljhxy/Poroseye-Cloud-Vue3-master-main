@@ -2,14 +2,24 @@
 
 @mixin colorBtn($color) {
   background: $color;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 
   &:hover {
     color: $color;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 
     &:before,
     &:after {
       background: $color;
     }
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -48,18 +58,26 @@
   border-radius: 8px;
   border: none;
   outline: none;
-  transition: 600ms ease all;
+  transition: all 0.3s ease;
   position: relative;
   display: inline-block;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   &:hover {
     background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 
     &:before,
     &:after {
       width: 100%;
-      transition: 600ms ease all;
+      transition: all 0.3s ease;
     }
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   &:before,
@@ -70,7 +88,7 @@
     right: 0;
     height: 2px;
     width: 0;
-    transition: 400ms ease all;
+    transition: all 0.3s ease;
   }
 
   &::after {
@@ -93,7 +111,20 @@
   box-sizing: border-box;
   outline: 0;
   margin: 0;
-  padding: 10px 15px;
+  padding: 12px 20px;
   font-size: 14px;
-  border-radius: 4px;
+  border-radius: 6px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 }

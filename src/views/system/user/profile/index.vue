@@ -1,5 +1,7 @@
 <template>
+  
    <div class="app-container">
+      <poroseye-header :qhExperimentFlag="false"  :geren="1"/>
       <el-row :gutter="20">
          <el-col :span="6" :xs="24">
             <el-card class="box-card">
@@ -9,6 +11,8 @@
                  </div>
                </template>
                <div>
+
+
                   <div class="text-center">
                      <userAvatar />
                   </div>
@@ -68,6 +72,9 @@ import userInfo from "./userInfo";
 import resetPwd from "./resetPwd";
 import { getUserProfile } from "@/api/system/user";
 
+//个人详情组件
+import PoroseyeHeader from '@/views/poroseye/components/poroseyeHeader.vue'
+
 const activeTab = ref("userinfo");
 const state = reactive({
   user: {},
@@ -85,3 +92,4 @@ function getUser() {
 
 getUser();
 </script>
+

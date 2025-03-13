@@ -7,6 +7,9 @@ import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
 import useUserStore from '@/store/modules/user'
 import useclientUserStore from '@/store/modules/clientUser'
+import usesmsUserStore from '@/store/modules/smsUser'
+
+
 
 let downloadLoadingInstance;
 // 是否显示重新登录
@@ -23,12 +26,28 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
+  
+  const userClientStore = useclientUserStore()
+  const userSmsStore = usesmsUserStore()
   // 是否需要设置 token
   const isToken = (config.headers || {}).isToken === false
   // 是否需要防止数据重复提交
   const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
   if (getToken() && !isToken) {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    // console.log('config')
+    // console.log(config)
+    // console.log(userClientStore.loginType)
+    // console.log(userSmsStore.loginType)
+    // console.log('config')
+    // 客户端登录用户设置登录类型为client_user
+    if(userClientStore.loginType == 'client_user'){
+      config.headers['login_type'] = 'client_user'
+    }
+    //短信和微信登录用户设置登录类型为app_user
+    if(userSmsStore.loginType == 'app_user'){
+      config.headers['login_type'] = 'app_user'
+    }
   }
   // get请求映射params参数
   if (config.method === 'get' && config.params) {

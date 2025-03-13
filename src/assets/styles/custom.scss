@@ -1,0 +1,46 @@
+/* 添加全局样式覆盖 */
+.el-dropdown-menu__item:hover, 
+.el-dropdown-menu__item:focus {
+  background-color: rgba(255, 132, 19, 0.1) !important;
+  color: #ff9900 !important;
+}
+
+.el-dropdown-menu__item:hover .el-icon, 
+.el-dropdown-menu__item:focus .el-icon {
+  color: #ff9900 !important;
+}
+
+
+/* 退出登录按钮样式 */
+.el-dropdown-menu__item.is-divided {
+    &:hover, &:focus {
+      background-color: rgba(255, 132, 19, 0.1) !important;
+      color: #ff9900 !important;
+    }
+  }
+  
+  /* 确保退出登录按钮的图标也变色 */
+  .el-dropdown-menu__item.is-divided:hover .el-icon, 
+  .el-dropdown-menu__item.is-divided:focus .el-icon {
+    color: #ff9900 !important;
+  }
+  
+  /* 弹框按钮样式统一 */
+  .el-button--primary {
+    background-color: #ff9900 !important;
+    border-color: #ff9900 !important;
+  }
+  
+  .el-button--primary:hover,
+  .el-button--primary:focus {
+    background-color: #ffaa33 !important;
+    border-color: #ffaa33 !important;
+  }
+  
+  /* 普通按钮悬停样式 */
+//   .el-button:not(.el-button--primary):hover,
+//   .el-button:not(.el-button--primary):focus {
+//     color: #ff9900 !important;
+//     border-color: rgba(255, 132, 19, 0.5) !important;
+//     background-color: rgba(255, 132, 19, 0.1) !important;
+//   }

@@ -7,17 +7,17 @@
     <div class="right-menu">
       <template v-if="appStore.device !== 'mobile'">
         
-        <screenfull id="screenfull" class="right-menu-item" />
-        <el-tooltip content="布局大小" effect="dark" placement="bottom">
+        <!-- <screenfull id="screenfull" class="right-menu-item" /> -->
+        <!-- <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item" />
-        </el-tooltip>
+        </el-tooltip> -->
       </template>
       <div class="avatar-container">
         <el-dropdown @command="handleCommand" class="right-menu-item" trigger="click">
           <div class="avatar-wrapper">
-            {{ userStore.loginType }}-{{userSmsStore.loginType  }} {{ userStore.id }}-{{ userSmsStore.id }}
+            {{ userStore.loginType }}-{{userSmsStore.loginType  }} {{ userStore.id }}-{{ userSmsStore.nickname}}
             <!-- <img :src="userStore.id" class="user-avatar" /> -->
-            <span>{{userStore.id ? userStore.username : userSmsStore.phoneNumber }}</span>
+            <span>{{userStore.id ? userStore.username : userSmsStore.phoneNumber}}</span>
             <el-icon class="avatar-icon"><caret-bottom /></el-icon>
           </div>
           <template #dropdown>

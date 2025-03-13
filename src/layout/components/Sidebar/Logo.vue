@@ -140,11 +140,9 @@ const getLogoTextColor = computed(() => {
 .sidebar-logo-container {
   position: relative;
   width: 100%;
-  height: 100px;
-  line-height: 60px;
+  height: 70px;
+  line-height: normal;
   background: #1e1e1e;
-  // background: pink;
-  // border-radius: 50%;
   text-align: center;
   overflow: hidden;
 
@@ -157,21 +155,19 @@ const getLogoTextColor = computed(() => {
     align-items: center;
 
     & .sidebar-logo {
-      width: 52px;
-      height: 52px;
+      width: 40px;
+      height: 40px;
       vertical-align: middle;
-      // margin-right: 12px;
-      margin-bottom: 10px; /* 添加间距 */
+      margin-bottom: 5px;
     }
 
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      // color: v-bind(getLogoTextColor);
       color: #ff9900;
       font-weight: 700;
-      line-height: 20px;
-      font-size: 24px;
+      line-height: 1.2;
+      font-size: 16px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }

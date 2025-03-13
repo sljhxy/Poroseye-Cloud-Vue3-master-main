@@ -1,9 +1,9 @@
 {
-  "name": "ruoyi",
+  "name": "slj",
   "version": "3.6.5",
-  "description": "若依管理系统",
-  "author": "若依",
-  "license": "MIT",
+  "description": "POROSEYS实验平台",
+  "author": "POROSEYS",
+  "license": "MT",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -21,6 +21,7 @@
     "@vueuse/core": "10.11.0",
     "axios": "0.28.1",
     "clipboard": "2.0.11",
+    "crypto-js": "^4.2.0",
     "echarts": "5.5.1",
     "element-plus": "2.7.6",
     "file-saver": "2.0.5",

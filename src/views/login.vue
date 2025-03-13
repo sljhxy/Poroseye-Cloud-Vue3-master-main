@@ -1,214 +1,275 @@
 <template>
-  <div class="login">
-
-    <div class="login-container" v-if="!registeFlag">
-      <div class="login-header">
-        <h2>欢迎使用仿真实验室</h2>
+  <div class="layout">
+    <div class="po">
+      <img src="../assets/images/poro/poroseye.png" alt="poro" class="img-poro">
+    </div>
+     
+    <div class="welcome-title">
+      <h1>欢迎使用 POROSEYE 仿真实验平台</h1>
+    </div>
+      
+    <!-- 实验室特性展示区 -->
+    <div class="feature-showcase">
+      <div class="feature-item feature-3dnz">
+        <img src="../assets/images/poro/3dnz.png" alt="3D拟真" class="feature-img">
       </div>
+      <div class="feature-item feature-hjyl">
+        <img src="../assets/images/poro/hjyl.png" alt="环节演练" class="feature-img">
+      </div>
+      <div class="feature-item feature-scxx">
+        <img src="../assets/images/poro/scxx.png" alt="随处学习" class="feature-img">
+      </div>
+      <div class="feature-item feature-sdjj">
+        <img src="../assets/images/poro/sdjj.png" alt="深度讲解" class="feature-img">
+      </div>
+      <div class="feature-item feature-tbsy">
+        <img src="../assets/images/poro/tbsy.png" alt="同步实验" class="feature-img">
+      </div>
+      <div class="feature-item feature-xnsys">
+        <img src="../assets/images/poro/xnsys.png" alt="虚拟实验室" class="feature-img">
+      </div>
+    </div>
 
-      <!-- tab 切换栏 -->
-      <div class="login-tabs">
-        <el-tabs v-model="activeTab" class="custom-tabs"
-          style="width: 400px;--el-color-primary:#ff6634;--el-text-color-primary:#999;--el-font-size-base: 17px; "
-          stretch="true" @tab-click="handleTabChange">
-          <!-- --el-border-radius-base:30px -->
-          <el-tab-pane name="account">
-            <template #label>
-              <div class="login-tabs-span">
-                <span :class="{ 'active-tab': activeTab === 'account' }">{{ !isWechatLoginFlag ? '账号登录' : '微信扫码登录'
-                  }}</span>
-              </div>
-            </template>
 
-            <div class="login-form" v-if="!isWechatLoginFlag">
 
-                <el-form ref="loginRef" :model="formData" :rules="rules" label-width="auto" style="max-width: 600px">
-                  <el-form-item prop="userno">
-                    <el-input v-model="formData.userno" style="width: 100%;height: 50px;
-                        margin-top: 20px;--el-border-radius-base: 30px;" size="large" type="text" placeholder="请输入学号" :prefix-icon="User" clearable/>
-                  </el-form-item>
 
-                  <el-form-item prop="password">
-                    <el-input v-model="formData.password" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large"
-                      type="password" placeholder="请输入密码" :prefix-icon="Lock" show-password clearable />
-                  </el-form-item>
+    <el-button class="login-btn-tmp" size="large" @click="loginDialog = true">
+      <el-icon class="login-icon"><User /></el-icon>
+      <span>登录/注册</span>
+    </el-button>
 
-                  <el-form-item>
-                    <label class="remember-account">
-                      <input type="checkbox" v-model="formData.rememberAccount">
-                      <span>记住当前账号</span>
-                    </label>
-                    <el-button class="login-button" 
-                      :loading="loading"
-                      :disabled="!formData.userno && !formData.password" 
-                      :class="{ loginBtn: formData.userno && formData.password }" @click.prevent="handleLogin">
-                      
-                        <span v-if="!loading">登 录</span>
-                        <span v-else>登 录 中...</span>
-                    </el-button>
-                  </el-form-item>
 
-                </el-form>
-
+    <!-- 登录弹框 -->
+    <el-dialog    
+        v-model="loginDialog"
+        width="500px"
+        style="border-radius: 15px;text-align: center;
+        "
+        :close-on-click-modal="false"
+        class="textbook-dialog"
+        destroy-on-close>
+        <div class="login">
+          <div class="login-container" v-if="!registeFlag">
+            <div class="login-header">
+              <h2>欢迎使用仿真实验室</h2>
             </div>
 
-            <!-- 微信扫码登录 -->
-            <div class="login-form" v-else>
-              <div class="form-item-weixin">
-                <span>微信扫码关注公众号登录</span>
+            <!-- tab 切换栏 -->
+            <div class="login-tabs">
+              <el-tabs v-model="activeTab" class="custom-tabs"
+                style="width: 400px;--el-color-primary:#ff6634;--el-text-color-primary:#999;--el-font-size-base: 17px; "
+                stretch="true" @tab-click="handleTabChange">
+                <!-- --el-border-radius-base:30px -->
+                <el-tab-pane name="account">
+                  <template #label>
+                    <div class="login-tabs-span">
+                      <span :class="{ 'active-tab': activeTab === 'account' }">{{ !isWechatLoginFlag ? '账号登录' : '微信扫码登录'
+                        }}</span>
+                    </div>
+                  </template>
+
+                  <div class="login-form" v-if="!isWechatLoginFlag">
+
+                      <el-form ref="loginRef" :model="formData" :rules="rules" label-width="auto" style="max-width: 600px">
+                        <el-form-item prop="userno">
+                          <el-input v-model="formData.userno" style="width: 100%;height: 50px;
+                              margin-top: 20px;--el-border-radius-base: 30px;" size="large" type="text" placeholder="请输入学号" :prefix-icon="User" clearable/>
+                        </el-form-item>
+
+                        <el-form-item prop="password">
+                          <el-input v-model="formData.password" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large"
+                            type="password" placeholder="请输入密码" :prefix-icon="Lock" show-password clearable />
+                        </el-form-item>
+
+                        <el-form-item>
+                          <label class="remember-account">
+                            <input type="checkbox" v-model="formData.rememberAccount">
+                            <span>记住当前账号</span>
+                          </label>
+                          <el-button class="login-button" 
+                            :loading="loading"
+                            :disabled="!formData.userno && !formData.password" 
+                            :class="{ loginBtn: formData.userno && formData.password }" @click.prevent="handleLogin">
+                            
+                              <span v-if="!loading">登 录</span>
+                              <span v-else>登 录 中...</span>
+                          </el-button>
+                        </el-form-item>
+
+                      </el-form>
+
+                  </div>
+
+                  <!-- 微信扫码登录 -->
+                  <div class="login-form" v-else>
+                    <div class="form-item-weixin">
+                      <span>微信扫码关注公众号登录</span>
+                    </div>
+                    <div class="qrcode-wrapper">
+                      <div class="qrcode-img">
+                        <img :src="codeImage" alt="weixin" width="252px">
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                </el-tab-pane>
+                <el-tab-pane name="phone">
+                  <template #label>
+                    <div class="login-tabs-span">
+                      <span :class="{ 'active-tab': activeTab === 'phone' }">手机号登录</span>
+                    </div>
+                  </template>
+
+                  <el-form ref="loginPhoneRef" :model="formData" :rules="rules" label-width="auto" style="max-width: 600px">
+                    <el-form-item prop="phonenumber">
+                      <el-input v-model="formData.phonenumber" style="width: 100%;
+                              margin-top: 20px;height: 50px;--el-border-radius-base: 30px;" size="large" type="text" placeholder="请输入手机号码"
+                        :prefix-icon="Iphone" :clearable="!isPhoneValid" >
+                        <template #suffix>
+                          <el-icon class="valid-icon" v-if="isPhoneValid"><CircleCheck /></el-icon>
+                        </template>
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-input v-model="formData.smsCode" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large"
+                        type="text" placeholder="请输入短信验证码" :prefix-icon="ChatDotSquare" clearable>
+                        <template #append>
+                          <el-button  :disabled="!isPhoneValid" :class="{ activeYzm: isPhoneValid }" @click="handleSendCode">{{ countdown >
+                                    0 ? `${countdown}s` : '获取验证码' }}</el-button>
+                        </template>
+                      </el-input>
+                      <!-- style="color: #ff6634;" -->
+                    </el-form-item>
+
+                    <!-- 滑动验证 -->
+                    <!-- <Verify
+                      ref="verify"
+                      :captchaType="'blockPuzzle'"
+                      :imgSize="{ width: '330px', height: '155px' }"
+                      :mode="'pop'"
+                      @success="capctchaCheckSuccess"
+                    ></Verify> -->
+
+                    <el-form-item>
+                      <label class="remember-account">
+                        <input type="checkbox" v-model="formData.rememberPhoneNumber">
+                        <span>记住当前账号</span>
+                      </label>
+                      <!-- <button class="login-button" @click="handleSubjectChange">登录</button> -->
+                      <el-button class="login-button" 
+                        :loading="loading"
+                        :disabled="!formData.phonenumber && !formData.smsCode"
+                        :class="{ loginBtn: formData.phonenumber && formData.smsCode }" 
+                        @click.prevent="handleSmsLogin">
+                      <span v-if="!loading">登 录</span>
+                      <span v-else>登 录 中...</span>
+                    </el-button>
+                    </el-form-item>
+                  </el-form>
+
+
+                </el-tab-pane>
+              </el-tabs>
+            </div>
+
+
+            <!-- 登录按钮底部 -->
+            <div class="login-footer" v-if="!isWechatLoginFlag">
+              <span class="forgot-password">忘记密码</span>
+
+              <span class="split-line" style="margin: 0 15px 0 15px;color: #999;">|</span>
+
+              <span class="quick-register" @click="register">快速注册</span>
+            </div>
+
+            <div class="other-login">
+              <div class="divider">
+                <span>其他登录方式</span>
               </div>
-              <div class="qrcode-wrapper">
-                <div class="qrcode-img">
-                  <img :src="codeImage" alt="weixin" width="252px">
+              <div class="login-methods">
+                <div class="method-item">
+                  <el-button size="small" round class="login-btn">
+                    <!-- --el-color-primary  --el-color-primary-light-7 --el-color-primary-light-9 -->
+                    <el-icon v-show="isWechatLoginFlag">
+                      <User />
+                    </el-icon>
+                    <img class="weixin-icon" src="../assets/images/weixin.png" alt="weixin-1" width="15px"
+                      v-show="!isWechatLoginFlag" />&nbsp;&nbsp;
+                    <i class="wechat-icon" @click="weixinLogin(isWechatLoginFlag)">{{ isWechatLoginFlag ? '账户密码登录' : '微信扫码登录' }}</i>
+                  </el-button>
+
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- 注册页面 -->
+          <div class="login-container" v-else="registeFlag">
+            <div class="login-header">
+              <h2>欢迎使用仿真实验室</h2>
+            </div>
+
+            <div class="login-form"
+              style="margin: 0 auto;width: 400px;--el-color-primary:#ff6634;--el-text-color-primary:#999;--el-font-size-base: 17px;">
+
+              <el-form ref="registerUserRef" :model="formData" :rules="registerRules" label-width="auto" style="max-width: 600px">
+                <el-form-item prop="phonenumber">
+                  <el-input v-model="formData.phonenumber" style="width: 100%;
+                              margin-top: 20px;height: 50px;--el-border-radius-base: 30px;" size="large" type="text" placeholder="请输入手机号"
+                    :prefix-icon="Iphone" :clearable="!isPhoneValid">
+                    <template #suffix>
+                          <el-icon class="valid-icon" v-if="isPhoneValid"><CircleCheck /></el-icon>
+                        </template>
+                  </el-input>
+                </el-form-item>
+                <el-form-item>
+
+                  <el-input v-model="formData.smsCode" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large" type="text"
+                    placeholder="请输入短信验证码" :prefix-icon="ChatDotSquare" clearable>
+                    <template #append>
+                      <el-button :disabled="!isPhoneValid" :class="{ activeYzm: isPhoneValid }" @click="handleSendCode">{{ countdown > 0 ?
+                              `获取验证码${countdown}s` : '获取验证码' }}</el-button>
+                    </template>
+
+                  </el-input>
+                </el-form-item>
+                <el-form-item prop="password">
+                  <el-input v-model="formData.password" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large"
+                    type="password" placeholder="请输入密码" :prefix-icon="Lock" show-password clearable />
+
+                </el-form-item>
+                <el-form-item prop="isagree">
+                  <label class="remember-account">
+                    <input type="checkbox" v-model="formData.isagree">
+                    <span style="cursor: pointer;">我已阅读并同意<span style="color: #40a9ff;" @click="goToUserAgreement">《POROSEYE用户协议》</span>和
+                    <span style="color: #40a9ff;" @click="goToPrivacyPolicy">《隐私政策》</span></span>
+                    
+                  </label>
+                  <!-- <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
+                  <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" /> -->
+                  <el-button class="login-button" 
+                    :loading="loading"
+                    :disabled="!formData.phonenumber && !formData.smsCode && !formData.password"
+                    :class="{ loginBtn: formData.phonenumber && formData.smsCode && formData.password }" @click="handleRegisterUser">
+                      <span v-if="!loading">注 册</span>
+                      <span v-else>注 册 中...</span>
+                  </el-button>
+                </el-form-item>
+              </el-form>
 
             </div>
 
-
-          </el-tab-pane>
-          <el-tab-pane name="phone">
-            <template #label>
-              <div class="login-tabs-span">
-                <span :class="{ 'active-tab': activeTab === 'phone' }">手机号登录</span>
-              </div>
-            </template>
-
-            <el-form ref="loginPhoneRef" :model="formData" :rules="rules" label-width="auto" style="max-width: 600px">
-              <el-form-item prop="phonenumber">
-                <el-input v-model="formData.phonenumber" style="width: 100%;
-                        margin-top: 20px;height: 50px;--el-border-radius-base: 30px;" size="large" type="text" placeholder="请输入手机号码"
-                  :prefix-icon="Iphone" :clearable="!isPhoneValid" >
-                  <template #suffix>
-                    <el-icon class="valid-icon" v-if="isPhoneValid"><CircleCheck /></el-icon>
-                  </template>
-                </el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-input v-model="formData.smsCode" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large"
-                  type="text" placeholder="请输入短信验证码" :prefix-icon="ChatDotSquare" clearable>
-                  <template #append>
-                    <el-button  :disabled="!isPhoneValid" :class="{ activeYzm: isPhoneValid }" @click="handleSendCode">{{ countdown >
-                              0 ? `${countdown}s` : '获取验证码' }}</el-button>
-                  </template>
-                </el-input>
-                <!-- style="color: #ff6634;" -->
-              </el-form-item>
-              <el-form-item>
-                <label class="remember-account">
-                  <input type="checkbox" v-model="formData.rememberPhoneNumber">
-                  <span>记住当前账号</span>
-                </label>
-                <!-- <button class="login-button" @click="handleSubjectChange">登录</button> -->
-                <el-button class="login-button" 
-                  :loading="loading"
-                  :disabled="!formData.phonenumber && !formData.smsCode"
-                  :class="{ loginBtn: formData.phonenumber && formData.smsCode }" 
-                  @click.prevent="handleSmsLogin">
-                <span v-if="!loading">登 录</span>
-                <span v-else>登 录 中...</span>
-              </el-button>
-              </el-form-item>
-            </el-form>
-
-
-          </el-tab-pane>
-        </el-tabs>
-      </div>
-
-
-      <!-- 登录按钮底部 -->
-      <div class="login-footer" v-if="!isWechatLoginFlag">
-        <span class="forgot-password">忘记密码</span>
-
-        <span class="split-line" style="margin: 0 15px 0 15px;color: #999;">|</span>
-
-        <span class="quick-register" @click="register">快速注册</span>
-      </div>
-
-      <div class="other-login">
-        <div class="divider">
-          <span>其他登录方式</span>
-        </div>
-        <div class="login-methods">
-          <div class="method-item">
-            <el-button size="small" round class="login-btn">
-              <!-- --el-color-primary  --el-color-primary-light-7 --el-color-primary-light-9 -->
-              <el-icon v-show="isWechatLoginFlag">
-                <User />
-              </el-icon>
-              <img class="weixin-icon" src="../assets/images/weixin.png" alt="weixin-1" width="15px"
-                v-show="!isWechatLoginFlag" />&nbsp;&nbsp;
-              <i class="wechat-icon" @click="weixinLogin(isWechatLoginFlag)">{{ isWechatLoginFlag ? '账户密码登录' : '微信扫码登录' }}</i>
-            </el-button>
-
+            <!-- tab 切换栏 -->
+            <div class="login-tabs" style="margin-top: 100px;">
+              <span @click="register">已有账户,
+                <span style="color: #ff6634;cursor: pointer;font-size: 16px;">直接登录</span></span>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+          </div>
+    </el-dialog>
 
-    <!-- 注册页面 -->
-    <div class="login-container" v-else="registeFlag">
-      <div class="login-header">
-        <h2>欢迎使用仿真实验室</h2>
-      </div>
-
-      <div class="login-form"
-        style="margin: 0 auto;width: 400px;--el-color-primary:#ff6634;--el-text-color-primary:#999;--el-font-size-base: 17px;">
-
-        <el-form ref="registerUserRef" :model="formData" :rules="registerRules" label-width="auto" style="max-width: 600px">
-          <el-form-item prop="phonenumber">
-            <el-input v-model="formData.phonenumber" style="width: 100%;
-                        margin-top: 20px;height: 50px;--el-border-radius-base: 30px;" size="large" type="text" placeholder="请输入手机号"
-              :prefix-icon="Iphone" :clearable="!isPhoneValid">
-              <template #suffix>
-                    <el-icon class="valid-icon" v-if="isPhoneValid"><CircleCheck /></el-icon>
-                  </template>
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-
-            <el-input v-model="formData.smsCode" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large" type="text"
-              placeholder="请输入短信验证码" :prefix-icon="ChatDotSquare" clearable>
-              <template #append>
-                <el-button :disabled="!isPhoneValid" :class="{ activeYzm: isPhoneValid }" @click="handleSendCode">{{ countdown > 0 ?
-                        `获取验证码${countdown}s` : '获取验证码' }}</el-button>
-              </template>
-
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input v-model="formData.password" style="width: 100%;height: 50px;--el-border-radius-base: 30px;" size="large"
-              type="password" placeholder="请输入密码" :prefix-icon="Lock" show-password clearable />
-
-          </el-form-item>
-          <el-form-item prop="isagree">
-            <label class="remember-account">
-              <input type="checkbox" v-model="formData.isagree">
-              <span style="cursor: pointer;">我已阅读并同意<span style="color: #40a9ff;" @click="goToUserAgreement">《POROSEYE用户协议》</span>和
-              <span style="color: #40a9ff;" @click="goToPrivacyPolicy">《隐私政策》</span></span>
-              
-            </label>
-            <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
-            <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
-            <el-button class="login-button" 
-              :loading="loading"
-              :disabled="!formData.phonenumber && !formData.smsCode && !formData.password"
-              :class="{ loginBtn: formData.phonenumber && formData.smsCode && formData.password }" @click="handleRegisterUser">
-                <span v-if="!loading">注 册</span>
-                <span v-else>注 册 中...</span>
-            </el-button>
-          </el-form-item>
-        </el-form>
-
-      </div>
-
-      <!-- tab 切换栏 -->
-      <div class="login-tabs" style="margin-top: 100px;">
-        <span @click="register">已有账户,
-          <span style="color: #ff6634;cursor: pointer;font-size: 16px;">直接登录</span></span>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -222,6 +283,10 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { getToken, setToken, removeToken , setLoginType, getLoginType, removeLoginType} from '@/utils/auth'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
+
+import Verify from "@/components/Verifition/Verify";
+
+const loginDialog = ref(false);
 
 const activeTab = ref('account');
 const countdown = ref(0);
@@ -384,6 +449,7 @@ function handleSmsLogin() {
   
   proxy.$refs.loginPhoneRef.validate(valid => {
     if (valid) {
+      
       loading.value = true;
 
        // 勾选了需要记住密码设置在 cookie 中设置记住用户名和密码
@@ -468,6 +534,9 @@ const toggleLoginMode = () => {
 
 //发送验证码
 const handleSendCode = () => {
+  //开启验证
+  // proxy.$refs.verify.show()
+
   if (countdown.value > 0) return;
   //获取短信验证码
   getSmsCode(formData.value.phonenumber).then(res => {
@@ -587,6 +656,11 @@ const scan = async () => {
         console.log('微信扫码登录成功。。。2222222。。')
         setToken(userInfo.value.access_token)
         setLoginType(userInfo.value.loginType)
+        smsStore.token = userInfo.value.access_token
+        smsStore.loginType = userInfo.value.loginType
+        smsStore.avatar = userInfo.value.avator
+        smsStore.nickname = userInfo.value.nickname
+        console.log(smsStore.token)
         if(getToken()) {
           console.log('微信扫码登录成功')
           const query = route.query;
@@ -633,17 +707,211 @@ function getCookie() {
 }
 
 
+function capctchaCheckSuccess() {
+
+}
+
 getCookie()
 </script>
 
 <style lang='scss' scoped>
+.layout{
+  background-image: url("../assets/images/login-bg.png");
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* LOGO样式 */
+.img-poro{
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  width: 220px;
+  z-index: 10;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+/* 欢迎标题 */
+/* 欢迎标题 - 减小底部边距 */
+.welcome-title {
+  margin-bottom: 20px; /* 减小底部边距 */
+  z-index: 10;
+  
+  h1 {
+    color: rgb(80, 78, 78);
+    font-size: 32px;
+    font-weight: 700;
+  }
+}
+
+/* 特性展示区 - 调整尺寸和间距 */
+.feature-showcase {
+  width: 100%;
+  height: 70%;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1px; /* 保持水平间距 */
+  padding: 5px; /* 减小内边距 */
+  z-index: 5;
+  margin-top: 10px; /* 减小顶部边距 */
+}
+
+.feature-item {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px; /* 减小内边距 */
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  
+  /* 添加实验室风格的装饰 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid rgba(255, 255, 255, 0.5);
+    border-left: 2px solid rgba(255, 255, 255, 0.5);
+    z-index: 1;
+  }
+  
+  // 其他样式保持不变...
+
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    border-right: 2px solid rgba(255, 255, 255, 0.5);
+    z-index: 1;
+  }
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(255, 102, 52, 0.25);
+    background: rgba(255, 255, 255, 0.2);
+    
+    img {
+      transform: scale(1.08);
+    }
+  }
+  
+  img {
+    width: 90%;
+    height: auto;
+    object-fit: contain;
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.25));
+    z-index: 2;
+  }
+}
+
+/* 为每个特性项添加不同的动画延迟和实验室风格 */
+.feature-3dnz {
+  animation: fadeInUp 1s ease 0.1s both;
+  // background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(72, 118, 255, 0.08));
+}
+
+.feature-hjyl {
+  animation: fadeInUp 1s ease 0.3s both;
+  // background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 102, 52, 0.08));
+}
+
+.feature-scxx {
+  animation: fadeInUp 1s ease 0.5s both;
+  // background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(52, 199, 89, 0.08));
+}
+
+.feature-sdjj {
+  animation: fadeInUp 1s ease 0.7s both;
+  // background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 204, 0, 0.08));
+}
+
+.feature-tbsy {
+  animation: fadeInUp 1s ease 0.9s both;
+  // background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(175, 82, 222, 0.08));
+}
+
+.feature-xnsys {
+  animation: fadeInUp 1s ease 1.1s both;
+  // background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(90, 200, 250, 0.08));
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 登录按钮样式 */
+.login-btn-tmp {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background-color: rgba(255, 102, 52, 0.9);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 102, 52, 0.4);
+  z-index: 10;
+  
+  &:hover {
+    background-color: rgba(255, 102, 52, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 102, 52, 0.5);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(255, 102, 52, 0.4);
+  }
+  
+  .login-icon {
+    font-size: 18px;
+  }
+}
+
+
 .login {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f5f5f5;
-  background-image: url("../assets/images/login-bg.png");
+  // height: 100vh;
+  // background-color: #f5f5f5;
+  // background-image: url("../assets/images/login-bg.png");
 
 
   //手机号输入正常后的样式
@@ -659,7 +927,7 @@ getCookie()
     background: #fff;
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 11px 15px 12px rgba(0, 0, 0, 0.1);
+    // box-shadow: 11px 15px 12px rgba(0, 0, 0, 0.1);
   }
 
   .login-header {
