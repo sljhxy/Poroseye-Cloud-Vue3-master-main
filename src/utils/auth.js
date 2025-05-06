@@ -1,10 +1,10 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'Admin-Token'
+const TokenKey = 'Poroseye-Token'
 
 const loginKey = 'login_type'
 
-const ExpiresInKey = 'Admin-Expires-In'
+const ExpiresInKey = 'Poroseye-Expires-In'
 
 
 

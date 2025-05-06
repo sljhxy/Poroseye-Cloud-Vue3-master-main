@@ -1,6 +1,8 @@
 <template>
   <div class="home-container">
    
+   <!-- <div style="width: 100px;height: 200px;background-color: #C3A6E0;"></div> -->
+   <!-- <div style="width: 100px;height: 200px;background-color: #A8E6CF;"></div> -->
 
     <poroseye-header :qhExperimentFlag="true" v-show="qhExperimentFlag"/>
     
@@ -248,7 +250,7 @@
 <div class="main-content">
 <div class="exp-list-section">
   <el-row :gutter="24">
-    <el-col :span="4" v-for="item in experimentList" :key="item.id">
+    <el-col :span="3" v-for="item in experimentList" :key="item.id">
       <div class="exp-item">
         <image-preview :src="item.thumbnail" :alt="item.experimentName" width="100%" />
         <div class="exp-preview">
