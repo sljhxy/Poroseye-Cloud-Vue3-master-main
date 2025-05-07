@@ -250,7 +250,7 @@
 <div class="main-content">
 <div class="exp-list-section">
   <el-row :gutter="24">
-    <el-col :span="3" v-for="item in experimentList" :key="item.id">
+    <el-col :span="4" v-for="item in experimentList" :key="item.id">
       <div class="exp-item">
         <image-preview :src="item.thumbnail" :alt="item.experimentName" width="100%" />
         <div class="exp-preview">
@@ -303,98 +303,75 @@
         class="textbook-dialog"
         destroy-on-close>
         <div class="textbook-content">
-    <div class="education-level">
-
-      <!-- 学段 -->
-      <div 
-        v-for="(level, index) in mt_academic_stage" 
-        :key="index"
-        class="level-item"
-        :class="{ active: currentLevel === level.value }"
-        @click="handleLevelChange(level)"
-      >
-        {{ level.label }}
-      </div>
-    </div>
-    <el-divider />
-    <div class="version-tabs">
-      <!-- <div 
-        class="version-item"
-        :class="{ active: currentVersion === 'all' }"
-        @click="handleVersionAllChange('all')"
-      >全部
-    </div> -->
-    <div>
-      <el-tag  class="version-item"
-        style="border-style: none;"
-        :class="{ active: currentVersion11111 === 'all' }"
-        @click="handleVersionAllChange('all')" type="info" size="large">全部</el-tag>
-    </div>
-      <!-- <div 
-        v-for="(version, index) in textbookLibraryNameArr" 
-        :key="index"
-        class="version-item"
-        :class="{ active: currentVersion === version.id }"
-        @click="handleVersionChange(version)"
-      >
-        {{ version.textbookVersionName }}
-      </div> -->
-
-      <div>
-        <el-tag v-model="textbookLibraryFrom.id"
-        class="version-item"
-        style="border-style: none;"
-        v-for="(version, index) in textbookLibraryNameArr" 
-        :key="index"
-        
-        :class="{ active: currentVersion11111 === version.id + '-' + version.textbookLibraryId }"
-        @click="handleVersionChange(version)" type="info" size="large"> {{ version.textbookVersionName }}</el-tag>
-      </div>
-    </div>
-    <div class="textbook-list">
-      <div class="textbook-row">
-        <div class="textbook-item all-books"  v-show="currentVersion11111 === 'all'">
-          <div class="cover-wrapper">
-            <img src="/src/assets/images/all.jpg" alt="全部教材" />
-          </div>
-          <div class="overlay">
-              <span :style="[currentVersion11111 == 'all'? 'color:#ff9900' : '']">所有教材资源</span><br>
+          <!-- 固定在顶部的学段选择 -->
+          <div class="education-level sticky-top">
+            <!-- 学段 -->
+            <div 
+              v-for="(level, index) in mt_academic_stage" 
+              :key="index"
+              class="level-item"
+              :class="{ active: currentLevel === level.value }"
+              @click="handleLevelChange(level)"
+            >
+              {{ level.label }}
             </div>
+          </div>
+          <el-divider />
+          
+          <!-- 可滚动的内容区域 -->
+          <div class="scrollable-content">
+            <div class="version-tabs">
+              <el-tag class="version-item"
+                style="border-style: none;"
+                :class="{ active: currentVersion11111 === 'all' }"
+                @click="handleVersionAllChange('all')" type="info" size="large">全部</el-tag>
+              
+              <el-tag v-model="textbookLibraryFrom.id"
+                class="version-item"
+                style="border-style: none;"
+                v-for="(version, index) in textbookLibraryNameArr" 
+                :key="index"
+                :class="{ active: currentVersion11111 === version.id + '-' + version.textbookLibraryId }"
+                @click="handleVersionChange(version)" type="info" size="large"> {{ version.textbookVersionName }}</el-tag>
+            </div>
+            
+            <div class="textbook-list">
+              <div class="textbook-row">
+                <div class="textbook-item all-books" v-show="currentVersion11111 === 'all'">
+                  <div class="cover-wrapper">
+                    <img src="/src/assets/images/all.jpg" alt="全部教材" />
+                  </div>
+                  <div class="overlay">
+                    <span :style="[currentVersion11111 == 'all'? 'color:#ff9900' : '']">所有教材资源</span><br>
+                  </div>
+                </div>
+                
+                <div class="textbook-item" v-for="item in subjectList" :key="item.id">
+                  <el-form v-model="textbookLibraryFrom">
+                    <el-form-item v-model="textbookLibraryFrom.textbookVersionName" class="book-info" :style="[item.id + '-' + item.textbookLibraryId + '-' + item.volumeId == clickCurrentId ? dynamicStyles : 'none' ]">
+                      <div class="cover-wrapper" @click="handleTextbookClick(item)">
+                        <img :src="item.coverImg" :alt="item.title" class="textbook-cover"/>
+                      </div>
+                      <span class="version">{{ item.textbookVersionName }}</span>
+                      <span class="grade">{{ item.volumeName }}</span>
+                    </el-form-item>
+                  </el-form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         
-        <div class="textbook-item" v-for="item in subjectList" :key="item.id">
-          <el-form v-model="textbookLibraryFrom">
-            <el-form-item v-model="textbookLibraryFrom.textbookVersionName" class="book-info" :style="[item.id + '-' + item.textbookLibraryId + '-' + item.volumeId == clickCurrentId ? dynamicStyles : 'none' ]">
-              <div class="cover-wrapper" @click="handleTextbookClick(item)">
-            <img :src="item.coverImg" :alt="item.title" class="textbook-cover"/>
+        <!-- 固定在底部的按钮区域 -->
+        <template #footer>
+          <div class="dialog-footer sticky-bottom">
+            <div class="dialog-footer-btn">
+              <el-button @click="cancleDialog(currentLevel)" 
+                style="--el-color-primary:#606266;--el-color-primary-light-7:#dcdfe6;--el-color-primary-light-9:#fff；border-style: none;">取消</el-button>
+              <el-button color="#ff9900" type="primary" @click="confirmSelect(currentLevel,item)" style="--el-color-black:#fff;">确定</el-button>
+            </div>
           </div>
-              <span class="version">{{ item.textbookVersionName }}</span>
-              <span class="grade">{{ item.volumeName }}</span>
-            </el-form-item>
-          </el-form>
-          <!-- <div class="cover-wrapper" @click="handleTextbookClick(item)">
-            <img :src="item.coverImg" :alt="item.title" class="textbook-cover"/>
-          </div> -->
-          <!--   clickCurrentId.value = item.textbookLibraryId + '-' + item.volumeId -->
-          <!-- <div class="book-info" :style="[item.id + '-' + item.textbookLibraryId + '-' + item.volumeId == clickCurrentId ? dynamicStyles : 'none' ]">
-              <span class="version">{{ item.textbookVersionName }}</span>
-              <span class="grade">{{ item.volumeName }}</span>
-            </div> -->
-        </div>
-      </div>
-    </div>
-  </div>
-  <template #footer>
-    <el-divider />
-    <div class="dialog-footer">
-      <div class="dialog-footer-btn">
-        <el-button @click="cancleDialog(currentLevel)" 
-          style="--el-color-primary:#606266;--el-color-primary-light-7:#dcdfe6;--el-color-primary-light-9:#fff；border-style: none;">取消</el-button>
-        <el-button color="#ff9900" type="primary" @click="confirmSelect(currentLevel,item)" style="--el-color-black:#fff;">确定</el-button>
-      </div>
-    
-    </div>
-  </template>
+        </template>
     </el-dialog>
 
         
@@ -1173,8 +1150,8 @@ const getSubjectIcon = (item) => {
       iconType = 'selectSub';
     }
 
-     // 根据科目类型返回对应的图标
-     if (item.value === '3') { // 生物
+    // 根据科目类型返回对应的图标
+    if (item.value === '3') { // 生物
       return subjectIcons.value.biology[iconType];
     } else if (item.value === '4') { // 物理
       return subjectIcons.value.physics[iconType];
@@ -1909,9 +1886,12 @@ getSubjectList()
 
 //弹框样式
 .textbook-dialog {
-  .el-dialog__body {
+  :deep(.el-dialog__body) {
+    padding: 0;
     max-height: 70vh;
-    overflow-y: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     &::-webkit-scrollbar {
       width: 6px;
     }
@@ -1939,12 +1919,14 @@ getSubjectList()
   }
 
   .textbook-content {
-
-
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
 
     .education-level {
       position: sticky;
-      top: 70px;
+      top: 0;
       background: white;
       z-index: 2;
       padding: 10px 0;
@@ -1978,16 +1960,23 @@ getSubjectList()
         }
       }
     }
+    
+    .scrollable-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 15px;
+      max-height: calc(70vh - 120px); /* 减去顶部和底部的高度 */
+    }
+    
     .version-tabs {
       display: flex;
       flex-wrap: wrap; // 添加换行
       justify-content: flex-start; // 改为左对齐
       gap: 5px;
-      margin: 20px 0;
       padding: 4px;
       // background: #f5f7fa;
       border-radius: 30px;
-      margin: 20px auto;
+      margin-bottom: 20px;
       width: 100%; // 设置宽度为100%
       .version-item {
         height: 37px;
@@ -2042,6 +2031,7 @@ getSubjectList()
 
     .textbook-list {
       padding: 0px;
+      padding-bottom: 20px;
 
       .textbook-row {
         display: grid;
